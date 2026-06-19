@@ -116,7 +116,7 @@
         aria-label="{{ forloop.index }} {{ 'general.slider.of' | t }} {{ forloop.length }}"
         tabindex="-1"
       >
-     <a class="small-hide" {% if block.settings.link-2 %} href="{{ block.settings.link-2 }}"{% endif %}>
+     <a class="small-hide slideshow__media-link"{% if block.settings.image_link != blank %} href="{{ block.settings.image_link }}" aria-label="{{ block.settings.heading | default: block.settings.caption | strip_html | escape }}"{% endif %}>
         <div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
           {%- if block.settings.image -%}
             {%- assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round -%}
@@ -130,7 +130,7 @@
             {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}
         </div></a>
-      <a class="large-up-hide" {% if block.settings.link %} href="{{ block.settings.link }}"{% endif %}>
+      <a class="large-up-hide slideshow__media-link"{% if block.settings.image_link != blank %} href="{{ block.settings.image_link }}" aria-label="{{ block.settings.heading | default: block.settings.caption | strip_html | escape }}"{% endif %}>
          <div class="slideshow__media banner__media media{% if block.settings.image_mob == blank %} placeholder{% endif %}">
           {%- if block.settings.image_mob -%}
             {%- assign height = block.settings.image_mob.width | divided_by: block.settings.image_mob.aspect_ratio | round -%}
@@ -463,6 +463,16 @@
           "default": "Button label",
           "label": "t:sections.slideshow.blocks.slide.settings.button_label.label",
           "info": "t:sections.slideshow.blocks.slide.settings.button_label.info"
+        },
+        {
+          "type": "header",
+          "content": "Image link"
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Link when image is clicked",
+          "info": "Clicking the slide image opens this link (e.g. your Best Sellers collection). This is separate from the button link."
         },
         {
           "type": "url",
