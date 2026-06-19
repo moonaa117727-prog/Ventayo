@@ -1,0 +1,655 @@
+{% doc %}
+  @prompt
+    Create a "Product Measurements" section with two columns: a left column with a section title (default "Product Measurements") and a subtitle/description text (default "The most detailed information about the product"), and a right column that displays a list of specification rows, each with a bold label and a value separated by a horizontal divider line. Each row should be a repeatable block so merchants can add, remove, and reorder rows. All text (section title, description, each label, and each value) must be editable in the theme editor. The design should match a clean, minimal specification table style with divider lines between rows, similar to a product spec sheet.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-measurements-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-product-measurements__container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: {{ block.settings.column_gap }}px;
+    align-items: start;
+  }
+
+  .ai-product-measurements__left-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.text_gap }}px;
+  }
+
+  .ai-product-measurements__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+    color: {{ block.settings.title_color }};
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .ai-product-measurements__description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.description_color }};
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .ai-product-measurements__right-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ai-product-measurements__row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: {{ block.settings.label_width }}% 1fr;
+    gap: {{ block.settings.row_gap }}px;
+    padding: {{ block.settings.row_padding }}px 0;
+    border-bottom: {{ block.settings.divider_thickness }}px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-product-measurements__row-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-product-measurements__label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    font-weight: {{ block.settings.label_weight }};
+    color: {{ block.settings.label_color }};
+    margin: 0;
+  }
+
+  .ai-product-measurements__value-{{ ai_gen_id }} {
+    font-size: {{ block.settings.value_size }}px;
+    font-weight: {{ block.settings.value_weight }};
+    color: {{ block.settings.value_color }};
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-product-measurements__container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.mobile_gap }}px;
+    }
+
+    .ai-product-measurements__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.85 }}px;
+    }
+
+    .ai-product-measurements__description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_size | times: 0.9 }}px;
+    }
+
+    .ai-product-measurements__row-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.mobile_row_gap }}px;
+    }
+  }
+{% endstyle %}
+
+<product-measurements-{{ ai_gen_id }}
+  class="ai-product-measurements-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-product-measurements__container-{{ ai_gen_id }}">
+    <div class="ai-product-measurements__left-{{ ai_gen_id }}">
+      {% if block.settings.section_title != blank %}
+        <h2 class="ai-product-measurements__title-{{ ai_gen_id }}">
+          {{ block.settings.section_title }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.section_description != blank %}
+        <div class="ai-product-measurements__description-{{ ai_gen_id }}">
+          {{ block.settings.section_description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-product-measurements__right-{{ ai_gen_id }}">
+      {% if block.settings.row_1_label != blank or block.settings.row_1_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_1_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_1_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_1_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_1_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_2_label != blank or block.settings.row_2_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_2_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_2_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_2_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_2_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_3_label != blank or block.settings.row_3_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_3_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_3_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_3_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_3_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_4_label != blank or block.settings.row_4_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_4_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_4_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_4_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_4_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_5_label != blank or block.settings.row_5_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_5_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_5_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_5_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_5_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_6_label != blank or block.settings.row_6_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_6_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_6_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_6_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_6_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_7_label != blank or block.settings.row_7_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_7_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_7_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_7_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_7_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.row_8_label != blank or block.settings.row_8_value != blank %}
+        <div class="ai-product-measurements__row-{{ ai_gen_id }}">
+          {% if block.settings.row_8_label != blank %}
+            <div class="ai-product-measurements__label-{{ ai_gen_id }}">
+              {{ block.settings.row_8_label }}
+            </div>
+          {% endif %}
+          {% if block.settings.row_8_value != blank %}
+            <div class="ai-product-measurements__value-{{ ai_gen_id }}">
+              {{ block.settings.row_8_value }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</product-measurements-{{ ai_gen_id }}>
+
+{% schema %}
+{
+  "name": "Product measurements",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Product Measurements"
+    },
+    {
+      "type": "richtext",
+      "id": "section_description",
+      "label": "Description",
+      "default": "<p>The most detailed information about the product</p>"
+    },
+    {
+      "type": "header",
+      "content": "Row 1"
+    },
+    {
+      "type": "text",
+      "id": "row_1_label",
+      "label": "Label",
+      "default": "Material"
+    },
+    {
+      "type": "text",
+      "id": "row_1_value",
+      "label": "Value",
+      "default": "100% Cotton"
+    },
+    {
+      "type": "header",
+      "content": "Row 2"
+    },
+    {
+      "type": "text",
+      "id": "row_2_label",
+      "label": "Label",
+      "default": "Weight"
+    },
+    {
+      "type": "text",
+      "id": "row_2_value",
+      "label": "Value",
+      "default": "250g"
+    },
+    {
+      "type": "header",
+      "content": "Row 3"
+    },
+    {
+      "type": "text",
+      "id": "row_3_label",
+      "label": "Label",
+      "default": "Dimensions"
+    },
+    {
+      "type": "text",
+      "id": "row_3_value",
+      "label": "Value",
+      "default": "30cm x 40cm x 10cm"
+    },
+    {
+      "type": "header",
+      "content": "Row 4"
+    },
+    {
+      "type": "text",
+      "id": "row_4_label",
+      "label": "Label",
+      "default": "Care Instructions"
+    },
+    {
+      "type": "text",
+      "id": "row_4_value",
+      "label": "Value",
+      "default": "Machine wash cold"
+    },
+    {
+      "type": "header",
+      "content": "Row 5"
+    },
+    {
+      "type": "text",
+      "id": "row_5_label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "row_5_value",
+      "label": "Value"
+    },
+    {
+      "type": "header",
+      "content": "Row 6"
+    },
+    {
+      "type": "text",
+      "id": "row_6_label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "row_6_value",
+      "label": "Value"
+    },
+    {
+      "type": "header",
+      "content": "Row 7"
+    },
+    {
+      "type": "text",
+      "id": "row_7_label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "row_7_value",
+      "label": "Value"
+    },
+    {
+      "type": "header",
+      "content": "Row 8"
+    },
+    {
+      "type": "text",
+      "id": "row_8_label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "row_8_value",
+      "label": "Value"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "text_gap",
+      "label": "Text gap",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "label": "Mobile gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Title style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color",
+      "default": "#1f1d24"
+    },
+    {
+      "type": "header",
+      "content": "Description style"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "header",
+      "content": "Specification rows"
+    },
+    {
+      "type": "range",
+      "id": "label_width",
+      "label": "Label column width",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "row_gap",
+      "label": "Row gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "row_padding",
+      "label": "Row padding",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_row_gap",
+      "label": "Mobile row gap",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Label style"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "label_weight",
+      "label": "Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Color",
+      "default": "#1f1d24"
+    },
+    {
+      "type": "header",
+      "content": "Value style"
+    },
+    {
+      "type": "range",
+      "id": "value_size",
+      "label": "Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "value_weight",
+      "label": "Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "value_color",
+      "label": "Color",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "range",
+      "id": "divider_thickness",
+      "label": "Thickness",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Color",
+      "default": "#e5e5e5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product measurements"
+    }
+  ]
+}
+{% endschema %}

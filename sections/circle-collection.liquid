@@ -1,0 +1,125 @@
+{% comment %}
+Customizable Navigation Swiper
+{% endcomment %}
+
+<div class="lzrh-nav-swiper-wrapper" style="background: {{ section.settings.bg_color }}">
+  <ul class="lzrh-nav-swiper">
+    {% for block in section.blocks %}
+      <li>
+        <a href="{{ block.settings.link }}" class="lzrh-nav-link" style="color: {{ block.settings.text_color }}">
+          {% if block.settings.image %}
+            <img 
+              src="{{ block.settings.image | image_url: width: 128 }}" 
+              alt="{{ block.settings.title }}" 
+              class="lzrh-nav-image" 
+              loading="lazy"
+            >
+          {% endif %}
+          {{ block.settings.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<style>
+  .lzrh-nav-swiper-wrapper{
+    padding:0;margin:0;overflow-x:auto;white-space:nowrap;
+  }
+  .lzrh-nav-swiper{
+    display:flex;justify-content:center;gap:40px;
+    padding:1rem 2rem;margin:0;list-style:none;
+    overflow-x:auto;scrollbar-width:none
+  }
+  .lzrh-nav-swiper::-webkit-scrollbar{display:none}
+  .lzrh-nav-link{
+    text-transform:uppercase;font-size:12px;font-weight:600;
+    text-decoration:none;white-space:nowrap;transition:color .2s,opacity .2s;
+    display:flex;flex-direction:column;align-items:center;gap:8px;width:auto
+  }
+  .lzrh-nav-link:hover{opacity:.7}
+ 
+  @media (max-width: 768px){
+    .lzrh-nav-swiper{gap:16px;padding:10px 1rem;justify-content:flex-start}
+    .lzrh-nav-link{font-size:10px;font-weight:300}
+    .lzrh-nav-image{width:70px !important;height:64px !important}
+  }
+.lzrh-nav-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  const swiper=document.querySelector(".lzrh-nav-swiper");
+  if(!swiper)return;
+  let isDown=false,startX,scrollLeft;
+  swiper.addEventListener("mousedown",e=>{
+    isDown=true;swiper.style.cursor="grabbing";
+    startX=e.pageX-swiper.offsetLeft;
+    scrollLeft=swiper.scrollLeft;e.preventDefault()
+  });
+  swiper.addEventListener("mouseleave",()=>{isDown=false;swiper.style.cursor="grab"});
+  swiper.addEventListener("mouseup",()=>{isDown=false;swiper.style.cursor="grab"});
+  swiper.addEventListener("mousemove",e=>{
+    if(!isDown)return;e.preventDefault();
+    const walk=(e.pageX-swiper.offsetLeft-startX)*2;
+    swiper.scrollLeft=scrollLeft-walk
+  });
+  swiper.style.cursor="grab"
+});
+</script>
+
+{% schema %}
+{
+  "name": "Custom Nav Swiper",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8f8f8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_item",
+      "name": "Navigation Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Item Title",
+          "default": "Category"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Item Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Item Image"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 20,
+  "presets": [
+    {
+      "name": "Custom Nav Swiper",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
